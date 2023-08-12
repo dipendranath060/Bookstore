@@ -1,0 +1,23 @@
+        let books = Book.find();
+
+        if(req.query.category) {
+            books = books.where('category', req.query.category);
+        }
+
+        if(req.sort==='asc') {
+            books = books.sort('price');
+        }
+
+        if(req.sort==='desc') {
+            books = books.sort('-price');
+        }
+
+        if(req.query.limit) {
+            books = books.limit(parseInt(req.query.limit));
+        }
+
+        if(req.query.page) {
+            books = books.skip((parseInt(req.query.page) - 1) * parseInt(req.query.limit));
+        }
+
+        books = await books.populate('category', ['name', 'status']);
